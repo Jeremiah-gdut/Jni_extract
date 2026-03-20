@@ -13,6 +13,8 @@ from binaryninja import (
     log_warn,
 )
 
+import json
+
 
 SETTINGS_GROUP = "androidJniArchive"
 AUTO_KEY = f"{SETTINGS_GROUP}.autoApply"
@@ -36,40 +38,34 @@ def _register_settings() -> None:
     if not settings.contains(AUTO_KEY):
         settings.register_setting(
             AUTO_KEY,
-            r'''
-            {
-                "title" : "Auto apply JNI archive",
-                "type" : "boolean",
-                "default" : true,
-                "description" : "Automatically attach jni.bnta and pull all types for likely Android JNI shared libraries."
-            }
-            '''
+            json.dumps({
+                "title": "Auto apply JNI archive",
+                "type": "boolean",
+                "default": True,
+                "description": "Automatically attach jni.bnta and pull all types for likely Android JNI shared libraries."
+            })
         )
 
     if not settings.contains(FORCE_KEY):
         settings.register_setting(
             FORCE_KEY,
-            r'''
-            {
-                "title" : "Force current view as Android JNI library",
-                "type" : "boolean",
-                "default" : false,
-                "description" : "Force auto-loading of jni.bnta for this BinaryView."
-            }
-            '''
+            json.dumps({
+                "title": "Force current view as Android JNI library",
+                "type": "boolean",
+                "default": False,
+                "description": "Force auto-loading of jni.bnta for this BinaryView."
+            })
         )
 
     if not settings.contains(ARCHIVE_KEY):
         settings.register_setting(
             ARCHIVE_KEY,
-            rf'''
-            {{
-                "title" : "JNI archive path",
-                "type" : "string",
-                "default" : "{_default_archive_path().replace("\\", "\\\\")}",
-                "description" : "Path to jni.bnta"
-            }}
-            '''
+            json.dumps({
+                "title": "JNI archive path",
+                "type": "string",
+                "default": _default_archive_path(),
+                "description": "Path to jni.bnta"
+            })
         )
 
 
